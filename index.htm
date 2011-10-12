@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>CSS</title>
+<style>
+body, html{
+-webkit-perspective: 800;
+height:100%;
+font:10px/12px Arial, sant serif;
+}
+#box{
+    width:200px;
+    height:200px;
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin: -100px 0 0 -100px;
+    background: -webkit-linear-gradient(top, rgba(234,239,181,1) 0%,rgba(225,233,160,1) 100%);
+	box-shadow:0 0 20px #3de;
+    border:1px solid #444; 
+}
+.controls{position:fixed; top:0; right:0; width:170px;}
+label{width:100%; float:left; margin-bottom:10px;}
+label span{width:100%; display:inline-block;}
+</style>
+</head>
+<body>
+	<div id="box" style="-webkit-transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1)" contenteditable></div>
+	<div class="controls">
+		<label><span>Translate X: </span><input id="x" type="range" value="0" min="-1000" max="1000" /><output>0</output></label>
+		<label><span>Translate Y: </span><input id="y" type="range" value="0" min="-1000" max="1000" /><output>0</output></label>
+		<label><span>Translate Z: </span><input id="z" type="range" value="0" min="-1000" max="1000" /><output>0</output></label>
+		<label><span>Rotate alpha: </span><input id="a" type="range" value="0" min="-360" max="360" /><output>0</output></label>
+		<label><span>Rotate beta: </span><input id="b" type="range" value="0" min="-360" max="360" /><output>0</output></label>
+		<label><span>Rotate Gama: </span><input id="w" type="range" value="0" min="-360" max="360" /><output>0</output></label>
+		<label><span>Scale: </span><input id="s" type="range" value="1" step="0.2" min="-5" max="10" /><output>1</output></label>
+	</div>
+  <script>
+ for(var i = 0; i<document.querySelectorAll('input[type="range"]').length; i++){
+	document.querySelectorAll('input[type="range"]')[i].addEventListener('change', function(){
+	this.nextElementSibling.value = this.value;
+	var b = document.getElementById('box'),
+		val = this.value,
+		type = this.getAttribute('id'),
+		tr = b.style.WebkitTransform.split(' '),
+		trX = parseFloat(tr[0].substring(tr[0].indexOf('(')+1, tr[0].indexOf('p'))),
+		trY = parseFloat(tr[1].substr(0, tr[1].indexOf('p'))),
+		trZ = parseFloat(tr[2].substr(0, tr[2].indexOf('p'))),
+		trA = parseFloat(tr[3].substr(tr[3].indexOf('(')+1, tr[3].indexOf('d'))),
+		trB = parseFloat(tr[4].substr(tr[4].indexOf('(')+1, tr[4].indexOf('d'))),
+		trW = parseFloat(tr[5].substr(tr[5].indexOf('(')+1, tr[5].indexOf('d'))),
+		trS = parseFloat(tr[6].substr(tr[6].indexOf('(')+1, tr[6].indexOf(')')));
+		
+		switch(type){
+			case 'x':
+				b.style.WebkitTransform ='translate3d(' + val + 'px, ' + trY + 'px, ' + trZ + 'px) ' + 'rotateX(' + trA + 'deg) ' + 'rotateY(' + trB + 'deg) ' + 'rotateZ(' + trW + 'deg) ' + 'scale(' + trS + ')';
+				break;
+			case 'y':
+				b.style.WebkitTransform ='translate3d(' + trX + 'px, ' + val + 'px, ' + trZ + 'px) ' + 'rotateX(' + trA + 'deg) ' + 'rotateY(' + trB + 'deg) ' + 'rotateZ(' + trW + 'deg)' + 'scale(' + trS + ')';
+				break;
+			case 'z':
+				b.style.WebkitTransform ='translate3d(' + trX + 'px, ' + trY + 'px, ' + val + 'px) ' + 'rotateX(' + trA + 'deg) ' + 'rotateY(' + trB + 'deg) ' + 'rotateZ(' + trW + 'deg)' + 'scale(' + trS + ')';
+				break;
+			case 'a':
+				b.style.WebkitTransform ='translate3d(' + trX + 'px, ' + trY + 'px, ' + trY + 'px) ' + 'rotateX(' + val + 'deg) ' + 'rotateY(' + trB + 'deg) ' + 'rotateZ(' + trW + 'deg)' + 'scale(' + trS + ')';
+				break;
+			case 'b':
+				b.style.WebkitTransform ='translate3d(' + trX + 'px, ' + trY + 'px, ' + trY + 'px) ' + 'rotateX(' + trA + 'deg) ' + 'rotateY(' + val + 'deg) ' + 'rotateZ(' + trW + 'deg)' + 'scale(' + trS + ')';
+				break;
+			case 'w':
+				b.style.WebkitTransform ='translate3d(' + trX + 'px, ' + trY + 'px, ' + trY + 'px) ' + 'rotateX(' + trA + 'deg) ' + 'rotateY(' + trB + 'deg) ' + 'rotateZ(' + val + 'deg)' + 'scale(' + trS + ')';
+				break;
+			case 's':
+				b.style.WebkitTransform ='translate3d(' + trX + 'px, ' + trY + 'px, ' + trY + 'px) ' + 'rotateX(' + trA + 'deg) ' + 'rotateY(' + trB + 'deg) ' + 'rotateZ(' + trW + 'deg)' + 'scale(' + val + ')';
+				break;
+		}
+	}, false);
+}
+  </script>
+</body>
+</html>
